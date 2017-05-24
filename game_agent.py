@@ -237,27 +237,31 @@ class MinimaxPlayer(IsolationPlayer):
 
 
         """
+        len(game.get_legal_moves()) == 0 or depth==0; return self.score(game, self)
+
+        v = min_player(game.forecast_move(m), depth -1 )
+        result = max(result, v)
+        return result
+
         #if self.time_left() < self.TIMER_THRESHOLD:
         #    raise SearchTimeout()
 
         # TODO: finish this function!
 
-        total_moves = game.get_legal_moves(game.active_player)
-        # not including depth at this point
-        # if total_moves and depth > 0:
-        if not total_moves:
-            return (-1, -1)
-        if not depth > 0:
-            return self.score(game, self)
+        # total_moves = game.get_legal_moves(game.active_player)
+        # if not total_moves:
+        #    return (-1, -1)
+        # if not depth > 0:
+        #    return self.score(game, self)
 
         # import pdb
         # pdb.set_trace()
         # _, move = max([(self.score(self.minimax(game.forecast_move(m), depth -1), self), m) for m in total_moves])
 
 
-        _, move = min([(self.score(game.forecast_move(m), self), m) for m in total_moves])
-        print(move)
-        return move
+        # _, move = min([(self.score(game.forecast_move(m), self), m) for m in total_moves])
+        # print(move)
+        # return move
 
 
 class AlphaBetaPlayer(IsolationPlayer):
