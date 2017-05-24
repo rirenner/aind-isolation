@@ -35,8 +35,17 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    raise NotImplementedError
+    # import pdb
+    # pdb.set_trace()
+    if game.is_loser(player):
+        return float("-inf")
 
+    if game.is_winner(player):
+        return float("inf")
+
+    own_moves = len(game.get_legal_moves(player))
+    opp_moves = len(game.get_legal_moves(game.get_opponent(player)))
+    return float(own_moves - opp_moves)
 
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view
@@ -112,7 +121,8 @@ class IsolationPlayer:
         positive value large enough to allow the function to return before the
         timer expires.
     """
-    def __init__(self, search_depth=3, score_fn=custom_score, timeout=10.):
+
+    def __init__(self, search_depth=3, score_fn=custom_score, timeout=10.0):
         self.search_depth = search_depth
         self.score = score_fn
         self.time_left = None
@@ -208,12 +218,46 @@ class MinimaxPlayer(IsolationPlayer):
                 pseudocode) then you must copy the timer check into the top of
                 each helper function or else your agent will timeout during
                 testing.
+        function MINIMAX-DECISION(state) returns an action
+             return arg max a ∈ ACTIONS(s) MIN-VALUE(RESULT(state, a))
+
+        function MAX-VALUE(state) returns a utility value
+             if TERMINAL-TEST(state) then return UTILITY(state)
+                 v ← −∞
+             for each a in ACTIONS(state) do
+               v ← MAX(v, MIN-VALUE(RESULT(state, a)))
+             return v
+
+        function MIN-VALUE(state) returns a utility value
+             if TERMINAL-TEST(state) then return UTILITY(state)
+                 v ← ∞
+             for each a in ACTIONS(state) do
+               v ← MIN(v, MAX-VALUE(RESULT(state, a)))
+             return v
+
+
         """
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
+        #if self.time_left() < self.TIMER_THRESHOLD:
+        #    raise SearchTimeout()
 
         # TODO: finish this function!
-        return (game.get_legal_moves()[0])
+
+        total_moves = game.get_legal_moves(game.active_player)
+        # not including depth at this point
+        # if total_moves and depth > 0:
+        if not total_moves:
+            return (-1, -1)
+        if not depth > 0:
+            return self.score(game, self)
+
+        # import pdb
+        # pdb.set_trace()
+        # _, move = max([(self.score(self.minimax(game.forecast_move(m), depth -1), self), m) for m in total_moves])
+
+
+        _, move = min([(self.score(game.forecast_move(m), self), m) for m in total_moves])
+        print(move)
+        return move
 
 
 class AlphaBetaPlayer(IsolationPlayer):

@@ -16,9 +16,13 @@ class IsolationTest(unittest.TestCase):
 
     def setUp(self):
         reload(game_agent)
-        self.player1 = "Player1"
+        self.player1 = game_agent.MinimaxPlayer()
         self.player2 = "Player2"
         self.game = isolation.Board(self.player1, self.player2)
+
+
+    def test_minmax(self):
+        self.player1.get_move(self.game, 2)
 
 
 if __name__ == '__main__':
