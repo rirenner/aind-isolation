@@ -218,33 +218,16 @@ class MinimaxPlayer(IsolationPlayer):
                 pseudocode) then you must copy the timer check into the top of
                 each helper function or else your agent will timeout during
                 testing.
-        function MINIMAX-DECISION(state) returns an action
-             return arg max a ∈ ACTIONS(s) MIN-VALUE(RESULT(state, a))
-
-        function MAX-VALUE(state) returns a utility value
-             if TERMINAL-TEST(state) then return UTILITY(state)
-                 v ← −∞
-             for each a in ACTIONS(state) do
-               v ← MAX(v, MIN-VALUE(RESULT(state, a)))
-             return v
-
-        function MIN-VALUE(state) returns a utility value
-             if TERMINAL-TEST(state) then return UTILITY(state)
-                 v ← ∞
-             for each a in ACTIONS(state) do
-               v ← MIN(v, MAX-VALUE(RESULT(state, a)))
-             return v
-
-
         """
+        # if self.time_left() < self.TIMER_THRESHOLD:
+        # raise SearchTimeout()
+
         len(game.get_legal_moves()) == 0 or depth==0; return self.score(game, self)
 
         v = min_player(game.forecast_move(m), depth -1 )
         result = max(result, v)
         return result
 
-        #if self.time_left() < self.TIMER_THRESHOLD:
-        #    raise SearchTimeout()
 
         # TODO: finish this function!
 
